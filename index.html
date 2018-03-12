@@ -1,43 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    
-    <!-- reset CSS -->
-    <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!-- Set favicon -->
+  <!-- <link rel="icon" href="https://getbootstrap.com/favicon.ico"> -->
 
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <title>Trivia Game</title>
 
-    <!-- CSS style -->
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+  <!-- reset CSS -->
+  <link rel="stylesheet" type="text/css" href="./assets/css/reset.css">
 
-    <title>Document Title</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+  <!-- CSS style -->
+  <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
 </head>
+
 <body>
-    <div class="container">
+  <main role="main">
 
+    <!-- // Jumbotron Top Banner -->
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h1 class="display-3">Geography Trivia</h1>
+        <p class="lead">This will test the utmost of your geographical knowledge.</p>
+      </div>
+    </div>
 
+    <div class="container container-fluid">
+
+      <!-- // First DIV Countdown Timer -->
+      <div class="card box-shadow timerCard">
+          <div class="card-body">
+            <h3 class="display-5">Time Remaining: <span id="timer"></span></h3>
+          </div>
+      </div>
+
+      <!-- Card Start Bootstrap -->
+      <div class="card box-shadow">
+        <div class="card-header">
+          <h2 class="display-4"><span id="question"></span></h2>
+        </div>
+        <div class="card-body">
+          <form class="form-inline">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="trivia-answers" id="inlineRadio1" value="option1">
+              <label class="form-check-label" for="inlineRadio1"><h3><span id="answer"></span></h3></label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="trivia-answers" id="inlineRadio2" value="option2">
+              <label class="form-check-label" for="inlineRadio2"><h3><span id="dummy1"></span></h3></label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="trivia-answers" id="inlineRadio3" value="option3">
+              <label class="form-check-label" for="inlineRadio3"><h3><span id="dummy2"></span></h3></label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="trivia-answers" id="inlineRadio4" value="option4">
+              <label class="form-check-label" for="inlineRadio4"><h3><span id="dummy3"></span></h3></label>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+      <!-- // Second DIV -->
       <div class="row">
           <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8"></div>
           <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4"></div>
       </div>
+
+      <!-- // Third DIV -->
       <div class="row">
           <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2"></div>
           <div class="col-xs-12 col-sm-6 col-md-4 col-lg-6"></div>
           <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4"></div>
       </div>
+
+      <!-- // Last DIV -->
       <div class="row"></div>
 
+    </div> <!-- // Close Container DIV -->
 
-    </div>
+  </main>
+
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- Popper JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  <!-- External Javascript reference -->
+  <script src="./assets/javascript/app.js "></script>
+
 </body>
 </html>

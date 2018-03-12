@@ -1,0 +1,11 @@
+.selector-for-some-widget {
+  box-sizing: content-box;
+}
+
+body {
+  background-color: #ffffff;
+}
+
+.timerCard {
+  margin: 0 0 1em 0;
+}
