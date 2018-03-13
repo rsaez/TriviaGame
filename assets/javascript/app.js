@@ -39,13 +39,81 @@ var trivia = [
 
 //  Variable that will hold our interval ID when we loead the page
 var intervalId;
-var sec = 10;
-var questionSet = 0;
-var i = 99;
-var userAnswer = "";
-var usedNums = [];
+var sec = 5;
+var questionObj = 0;
+var questionArr = [];
+var userAnswer = 0;
+var answerOrder = [];
+var cpuQuestion = "";
+var cpuAnswer = "";
 
-// Declare game variables
+//Choose a question
+function questionRandomizer() {
+  var i = getRndInteger(0, trivia.length);
+  // console.log("trivia.length: " + trivia.length);
+  // console.log("i: " + i);
+
+  cpuQuestion = trivia[i].question;
+  cpuAnswer = trivia[i].answer;
+
+  //transfer trivia object to questionArr
+  questionArr[0] = trivia[i].answer;
+  questionArr[1] = trivia[i].dummy1;
+  questionArr[2] = trivia[i].dummy2;
+  questionArr[3] = trivia[i].dummy3;
+
+  //next function to run presentQuestions()
+}
+
+// Get random number, this does nothing I just liked the function, I eventually did use it to choose the question randomly.
+function getRndInteger(min, max) {
+  return Math.floor(Math.random() * (max - min) ) + min;
+}
+
+// Sets random values from 0 to 3 to answerOrder array
+function randomMachine() {
+  // console.log(questionArr);
+
+  var ranNums = shuffle([0,1,2,3]);
+  answerOrder[0] = ranNums.next().value;
+  answerOrder[1] = ranNums.next().value;
+  answerOrder[2] = ranNums.next().value;
+  answerOrder[3] = ranNums.next().value;
+
+  var temp = [];
+  // This sorts questionArr with new random order
+  for (i = 0; i < questionArr.length; i++) {
+    temp[i] = questionArr[answerOrder[i]];
+  }
+  questionArr = temp;
+  // console.log(answerOrder);
+  // console.log(questionArr);
+}
+
+// Shuffle values in ranNums
+function* shuffle(array) {
+
+    var i = array.length;
+
+    while (i--) {
+        yield array.splice(Math.floor(Math.random() * (i+1)), 1)[0];
+    }
+
+}
+
+// Prints all data to the screen
+// questionArr contains selected question object
+function presentQuestions() {
+  $("#question").html(cpuQuestion);
+
+
+  // present answer radials
+  $("#answer").html(questionArr[0]);
+  $("#dummy1").html(questionArr[1]);
+  $("#dummy2").html(questionArr[2]);
+  $("#dummy3").html(questionArr[3]);
+
+}
 
 // Timers Functions
 function run() {
@@ -62,10 +130,11 @@ function decrement() {
   //  Show the number in the #show-number tag.
   $("#timer").html("<h2>" + sec + "</h2>");
 
-  console.log("sec: " + sec);
+  // console.log("sec: " + sec);
+
   //  Once number hits zero...
   if (sec === 0) {
-    console.log("sec is 0");
+    // console.log("sec is 0");
 
     //  ...run the stop function.
     stop();
@@ -79,46 +148,63 @@ function stop() {
   //  We just pass the name of the interval
   //  to the clearInterval function.
   clearInterval(intervalId);
-  userAnswer = $('input[name=trivia-answers]:checked').val();
-  console.log("userAnswer: " + userAnswer);
-  console.log("questionSet.answer : " + questionSet.answer);
-  if(userAnswer === questionSet.answer) {
+ getAnswer();
+}
+
+// gets ansswer from radio and sees if it's right
+function getAnswer() {
+  userAnswer = $("input[name='trivia-answers']:checked").val();
+
+  // computer selected answer is in questionArr[0]
+  console.log("CPU selected answer : " + cpuAnswer);
+  console.log("index chosen by user: " + userAnswer + " question at user chosen index: " + questionArr[userAnswer]);
+  //questionArr[answerOrder[0]];
+  // questionArr[i]
+
+
+  if(userAnswer == null) {
+    console.log("User did not choose an answer")
+    $('.alert').show();
+  }else if(questionArr[userAnswer] === cpuAnswer) {
+    console.log("correct")
+  }else {
+    console.log("wrong")
     $('.alert').show();
   }
 }
 
-//Choose a question
-function questionRandomizer() {
-  i = Math.floor(Math.random() * trivia.length);
-  console.log(i);
+function restart() {
+  //reinitialized all variables
+  sec = 5;
+  
+  //choose a question
+  questionRandomizer();
 
- //  for(var i=0;i < 10;i++){
- //
- //   randNum = randomNum(10, usedNums);
- //   usedNums.push(randNum);
- //
- //   //do something with ranNum
- // }
+  // sets random values to answerOrder array
+  randomMachine();
 
-  questionSet = trivia[i];
-}
+  // Print all data to user
+  presentQuestions();
 
-function presentQuestions() {
-  $("#question").html(questionSet.question);
+  // Start Timer
+  run();
 
-  // present answer radials
-  $("#answer").html(questionSet.answer);
-  $("#dummy1").html(questionSet.dummy1);
-  $("#dummy2").html(questionSet.dummy2);
-  $("#dummy3").html(questionSet.dummy3);
+  // Restart game
+  // restart();
 
 }
-
-//Start Timer
-run();
 
 //choose a question
 questionRandomizer();
+
+// sets random values to answerOrder array
+randomMachine();
+
+// Print all data to user
 presentQuestions();
 
-// var userAnswer = $('input[name=trivia-answers]:checked').val();
+// Start Timer
+run();
+
+// Restart game
+restart();
