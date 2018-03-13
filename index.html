@@ -35,10 +35,24 @@
 
     <div class="container container-fluid">
 
+      <!-- Win or Loose Message -->
+      <div class="alert alert-success alert-dismissible fade" role="alert">
+        <strong>You are correct!</strong> Next Question...
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="alert alert-danger alert-dismissible fade" role="alert">
+        <strong>You are WRONG!</strong> Next Question...
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
       <!-- // First DIV Countdown Timer -->
       <div class="card box-shadow timerCard">
           <div class="card-body">
-            <h3 class="display-5">Time Remaining: <span id="timer"></span></h3>
+            <h3 class="display-5 float-left">Time Remaining:<span class="float-right" id="timer"></span></h3>
           </div>
       </div>
 
@@ -50,19 +64,19 @@
         <div class="card-body">
           <form class="form-inline">
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="trivia-answers" id="inlineRadio1" value="option1">
+              <input class="form-check-input" type="radio" name="trivia-answers" id="inlineRadio1" value="0">
               <label class="form-check-label" for="inlineRadio1"><h3><span id="answer"></span></h3></label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="trivia-answers" id="inlineRadio2" value="option2">
+              <input class="form-check-input" type="radio" name="trivia-answers" id="inlineRadio2" value="1">
               <label class="form-check-label" for="inlineRadio2"><h3><span id="dummy1"></span></h3></label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="trivia-answers" id="inlineRadio3" value="option3">
+              <input class="form-check-input" type="radio" name="trivia-answers" id="inlineRadio3" value="2">
               <label class="form-check-label" for="inlineRadio3"><h3><span id="dummy2"></span></h3></label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="trivia-answers" id="inlineRadio4" value="option4">
+              <input class="form-check-input" type="radio" name="trivia-answers" id="inlineRadio4" value="3">
               <label class="form-check-label" for="inlineRadio4"><h3><span id="dummy3"></span></h3></label>
             </div>
 

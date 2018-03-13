@@ -31,7 +31,7 @@ var trivia = [
   {
     question: "This region is mostly made of ice.",
     answer: "Greenland",
-    dummy1: "ICeland",
+    dummy1: "Iceland",
     dummy2: "Newfoundland",
     dummy3: "Ireland",
   }
@@ -39,16 +39,18 @@ var trivia = [
 
 //  Variable that will hold our interval ID when we loead the page
 var intervalId;
-var sec = 30;
+var sec = 10;
 var questionSet = 0;
 var i = 99;
+var userAnswer = "";
+var usedNums = [];
 
 // Declare game variables
 
 // Timers Functions
 function run() {
   clearInterval(intervalId);
-  intervalId = setInterval(decrement, 1000 * sec);
+  intervalId = setInterval(decrement, 1000);
 }
 
 //  The decrement function.
@@ -60,9 +62,10 @@ function decrement() {
   //  Show the number in the #show-number tag.
   $("#timer").html("<h2>" + sec + "</h2>");
 
-
+  console.log("sec: " + sec);
   //  Once number hits zero...
   if (sec === 0) {
+    console.log("sec is 0");
 
     //  ...run the stop function.
     stop();
@@ -76,12 +79,27 @@ function stop() {
   //  We just pass the name of the interval
   //  to the clearInterval function.
   clearInterval(intervalId);
+  userAnswer = $('input[name=trivia-answers]:checked').val();
+  console.log("userAnswer: " + userAnswer);
+  console.log("questionSet.answer : " + questionSet.answer);
+  if(userAnswer === questionSet.answer) {
+    $('.alert').show();
+  }
 }
 
 //Choose a question
 function questionRandomizer() {
   i = Math.floor(Math.random() * trivia.length);
   console.log(i);
+
+ //  for(var i=0;i < 10;i++){
+ //
+ //   randNum = randomNum(10, usedNums);
+ //   usedNums.push(randNum);
+ //
+ //   //do something with ranNum
+ // }
+
   questionSet = trivia[i];
 }
 
@@ -102,3 +120,5 @@ run();
 //choose a question
 questionRandomizer();
 presentQuestions();
+
+// var userAnswer = $('input[name=trivia-answers]:checked').val();
