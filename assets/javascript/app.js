@@ -111,7 +111,7 @@ function randomMachine() {
 
 
 
-// Shuffle values in ranNums
+// Shuffle values in ranNums, not used for advance assingment
 function* shuffle(array) {
   var i = array.length;
 
@@ -140,11 +140,13 @@ function timer(countdown) {
 
 //  The decrement function.
 function questionTimer() {
-  //  Decrease number by one.
+
   sec--;
+  // setTimeout(questionTimer, 1000);
 
   //  Show the number in the #show-number tag.
   $("#timer").html("<h2>" + sec + "</h2>");
+
 
   // console.log("sec: " + sec);
 
@@ -159,11 +161,16 @@ function questionTimer() {
 
 // decrements the timer to transition to a new game
 function transitionDec() {
+
+  //   console.log("Transition Timer is Over");
+
   transitionTimer--;
+  //   setTimeout(transitionDec, 1000);
+
 
   // console.log("transitionTimer: " + transitionTimer);
 
-  //  Once number hits zero...
+  // Once number hits zero...
   if (transitionTimer === 0) {
     console.log("Transition Timer is Over");
 
@@ -195,12 +202,15 @@ function getAnswer() {
 
   if (userAnswer == null) {
     console.log("User did not choose an answer");
+    $("#answer-fail").html(cpuAnswer);
     $("#alert-noanswer").slideDown();
+
   } else if (questionArr[userAnswer] === cpuAnswer) {
     console.log("correct");
     $("#alert-correct").slideDown();
   } else {
     console.log("wrong");
+    $("#answer-fail").html(cpuAnswer);
     $("#alert-incorrect").slideDown();
   }
 
@@ -225,14 +235,15 @@ function restart() {
   console.log("restart");
 }
 
-console.log("Start Code");
-// do {
-
-  console.log("Inside while");
-// }
   //choose a question
-  questionRandomizer();
+  // questionRandomizer();
 
+  console.log("Start Code");
+  // do {
+
+while(currentQuestion < 5) {
+    console.log("Inside while");
+  // }
   // loads question to the program
   loadQuestion();
 
@@ -254,5 +265,4 @@ console.log("Start Code");
     restart();
   }
 
-// }
-// while (true);
+}
