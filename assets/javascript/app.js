@@ -48,8 +48,10 @@ var cpuQuestion = "";
 var cpuAnswer = "";
 var transitionTimer = 3;
 var reset = false;
+var currentQuestion = 0;
 
-//Choose a question
+// Randomly chooses a question from the question array
+// used for easy hw, not used for advanced
 function questionRandomizer() {
   var i = getRndInteger(0, trivia.length);
   // console.log("trivia.length: " + trivia.length);
@@ -72,7 +74,22 @@ function getRndInteger(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-// Sets random values from 0 to 3 to answerOrder array
+// Loads a question for the advanced hw
+function loadQuestion() {
+
+  cpuQuestion = trivia[currentQuestion].question;
+  cpuAnswer = trivia[currentQuestion].answer;
+
+  //transfer trivia object to questionArr
+  questionArr[0] = trivia[currentQuestion].answer;
+  questionArr[1] = trivia[currentQuestion].dummy1;
+  questionArr[2] = trivia[currentQuestion].dummy2;
+  questionArr[3] = trivia[currentQuestion].dummy3;
+  currentQuestion++;
+}
+
+// Randomly sets the orders of the answer positions
+// Sets values from 0 to 3 to answerOrder array
 function randomMachine() {
   // console.log(questionArr);
 
@@ -91,6 +108,8 @@ function randomMachine() {
   // console.log(answerOrder);
   // console.log(questionArr);
 }
+
+
 
 // Shuffle values in ranNums
 function* shuffle(array) {
@@ -199,6 +218,7 @@ function restart() {
   cpuAnswer = "";
   transitionTimer = 5;
   reset = false;
+  // currentQuestion = 0;
   $("#alert-noanswer").hide();
   $("#alert-correct").hide();
   $("#alert-wrong").hide();
@@ -212,6 +232,9 @@ console.log("Start Code");
 // }
   //choose a question
   questionRandomizer();
+
+  // loads question to the program
+  loadQuestion();
 
   // sets random values to answerOrder array
   randomMachine();
