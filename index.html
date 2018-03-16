@@ -35,30 +35,13 @@
 
     <div class="container container-fluid">
 
-      <!-- Win or Loose Message -->
-      <div class="alert alert-success collapse alert-dismissible" id="alert-correct" role="alert">
-        <strong>You are correct!</strong> Next Question...
-        <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button> -->
-      </div>
-      <div class="alert alert-danger collapse  alert-dismissible" id="alert-incorrect" role="alert">
-        <strong>You are WRONG!</strong> The answer is <strong><span class="answer-fail"></span></strong>
-        <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button> -->
-      </div>
-      <div class="alert alert-danger collapse alert-dismissible" id="alert-noanswer" role="alert">
-        <strong>You failed to select an answer!</strong> The answer is <strong><span class="answer-fail"></span></strong>
-        <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button> -->
-      </div>
+      <!-- Win, Loose, Noanswer Alert -->
+      <div id="alert"></div>
 
       <!-- // First DIV Countdown Timer -->
       <div class="card box-shadow timerCard">
           <div class="card-body">
-            <h3 class="display-5 float-left">Time Remaining: <span class="float-right" id="timer"></span></h3>
+            <h3 class="display-5 float-left">Time Remaining: <span class="float-right" id="countdown-clock"></span></h3>
           </div>
       </div>
 

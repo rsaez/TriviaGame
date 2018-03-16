@@ -1,7 +1,7 @@
-// The object questions for hangman.
+// The object questions for Trivia Game.
 var trivia = [
   {
-    //question[i].question
+    //trivia[i].question
     question: "This river flows through the cradle of civilization",
     answer: "Tigris and Euphratis",
     dummy1: "The Nile",
@@ -39,44 +39,42 @@ var trivia = [
 ];
 
 //  Variable that will hold our interval ID when we loead the page
-var intervalId;
-var sec = 5;
-var questionArr = [];
-var userAnswer = 0;
-var answerOrder = [];
 var cpuQuestion = "";
 var cpuAnswer = "";
-var transitionTimer = 3;
+var questionArr = [];
+var intervalId;
+var questionTime = 5;
+var alertTime = 3;
+var userCorrect = 0;
+var userIncorrect = 0;
 var reset = false;
-var currentQuestion = 0;
 
-// Randomly chooses a question from the question array
-// used for easy hw, not used for advanced
-function questionRandomizer() {
-  var i = getRndInteger(0, trivia.length);
-  // console.log("trivia.length: " + trivia.length);
-  // console.log("i: " + i);
 
-  cpuQuestion = trivia[i].question;
-  cpuAnswer = trivia[i].answer;
+  // loads question to the program
+  loadQuestion();
 
-  //transfer trivia object to questionArr
-  questionArr[0] = trivia[i].answer;
-  questionArr[1] = trivia[i].dummy1;
-  questionArr[2] = trivia[i].dummy2;
-  questionArr[3] = trivia[i].dummy3;
+  // sets random values to answerOrder array
+  randomMachine();
 
-  //next function to run presentQuestions()
-}
+  // Print all data to user
+  presentQuestions();
 
-// Get random number, this does nothing I just liked the function, I eventually did use it to choose the question randomly.
-function getRndInteger(min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
-}
+  // Start timerONE
+  timerONE(questionDecrement);
+
+  // runs logic to get answer from user
+  // getAnswer();
+
+  // Restart game
+  while (reset) {
+    console.log("restart function");
+    restart();
+  }
+
 
 // Loads a question for the advanced hw
 function loadQuestion() {
-
+    var currentQuestion = 0;
   cpuQuestion = trivia[currentQuestion].question;
   cpuAnswer = trivia[currentQuestion].answer;
 
@@ -92,6 +90,7 @@ function loadQuestion() {
 // Sets values from 0 to 3 to answerOrder array
 function randomMachine() {
   // console.log(questionArr);
+  var answerOrder = [];
 
   var ranNums = shuffle([0, 1, 2, 3]);
   answerOrder[0] = ranNums.next().value;
@@ -132,27 +131,33 @@ function presentQuestions() {
   $("#dummy3").html(questionArr[3]);
 }
 
-// Timers Functions
-function timer(countdown) {
+// Question timerONE
+function timerONE(countdown) {
+  clearInterval(intervalId);
+  intervalId = setInterval(countdown, 1000);
+}
+
+// Alert timerTWO
+function timerTWO(countdown) {
   clearInterval(intervalId);
   intervalId = setInterval(countdown, 1000);
 }
 
 //  The decrement function.
-function questionTimer() {
+function questionDecrement() {
 
-  sec--;
-  // setTimeout(questionTimer, 1000);
+  questionTime--;
+  // setTimeout(questionDecrement, 1000);
 
   //  Show the number in the #show-number tag.
-  $("#timer").html("<h2>" + sec + "</h2>");
+  $("#countdown-clock").html("<h2>" + questionTime + "</h2>");
 
 
-  // console.log("sec: " + sec);
+  // console.log("questionTime: " + questionTime);
 
   //  Once number hits zero...
-  if (sec === 0) {
-    // console.log("sec is 0");
+  if (questionTime === 0) {
+    // console.log("questionTime is 0");
 
     //  ...run the stop function.
     stop();
@@ -160,18 +165,18 @@ function questionTimer() {
 }
 
 // decrements the timer to transition to a new game
-function transitionDec() {
+function alertDecrement() {
 
   //   console.log("Transition Timer is Over");
 
-  transitionTimer--;
-  //   setTimeout(transitionDec, 1000);
+  alertTime--;
+  //   setTimeout(alertDecrement, 1000);
 
 
-  // console.log("transitionTimer: " + transitionTimer);
+  // console.log("alertTime: " + alertTime);
 
   // Once number hits zero...
-  if (transitionTimer === 0) {
+  if (alertTime === 0) {
     console.log("Transition Timer is Over");
 
     //enables restart
@@ -195,74 +200,39 @@ function stop() {
 function getAnswer() {
   userAnswer = $("input[name='trivia-answers']:checked").val();
 
-  // Check CPU to user answer
-  // computer selected answer is in questionArr[0]
-  // console.log("CPU selected answer : " + cpuAnswer);
-  // console.log("index chosen by user: " + userAnswer + " question at user chosen index: " + questionArr[userAnswer]);
-
   if (userAnswer == null) {
     console.log("User did not choose an answer");
-    $("#answer-fail").html(cpuAnswer);
-    $("#alert-noanswer").slideDown();
+    console.log("cpuAnswer: " + cpuAnswer);
+    $('#alert').html('<div class="alert alert-danger alert-dismissible" role="alert"><strong>You failed to select an answer!</strong> The answer is ' + cpuAnswer + '</div>');
+  $('#alert').slideDown();
+
 
   } else if (questionArr[userAnswer] === cpuAnswer) {
     console.log("correct");
-    $("#alert-correct").slideDown();
+    $('#alert').html('<div class="alert alert-success alert-dismissible" role="alert"><strong>You are correct!</strong></div>');
+  $('#alert').slideShow();
   } else {
     console.log("wrong");
-    $("#answer-fail").html(cpuAnswer);
-    $("#alert-incorrect").slideDown();
+    console.log("cpuAnswer: " + cpuAnswer);
+    $('#alert').html('<div class="alert alert-danger alert-dismissible" role="alert"><strong>You are Wrong. </strong> The answer is ' + cpuAnswer + '</div>');
+  $('#alert').slideDown();
   }
 
-  timer(transitionDec);
+  timerTWO(alertDecrement);
   // console.log("after transtion");
 }
 
 function restart() {
   //reinitialized all variables
-  sec = 5;
+  questionTime = 5;
   questionArr = [];
   userAnswer = 0;
-  answerOrder = [];
   cpuQuestion = "";
   cpuAnswer = "";
-  transitionTimer = 5;
+  alertTime = 5;
   reset = false;
-  // currentQuestion = 0;
   $("#alert-noanswer").hide();
   $("#alert-correct").hide();
   $("#alert-wrong").hide();
   console.log("restart");
-}
-
-  //choose a question
-  // questionRandomizer();
-
-  console.log("Start Code");
-  // do {
-
-while(currentQuestion < 5) {
-    console.log("Inside while");
-  // }
-  // loads question to the program
-  loadQuestion();
-
-  // sets random values to answerOrder array
-  randomMachine();
-
-  // Print all data to user
-  presentQuestions();
-
-  // Start Timer
-  timer(questionTimer);
-
-  // runs logic to get answer from user
-  // getAnswer();
-
-  // Restart game
-  while (reset) {
-    console.log("restart function");
-    restart();
-  }
-
 }
