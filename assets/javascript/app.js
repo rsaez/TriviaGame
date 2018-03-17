@@ -64,7 +64,8 @@ for (var i = 0; i < trivia.length; i++) {
     presentQuestions();
 
     // Start question timer
-    timerONE(questionDecrement);
+    timerONE();
+    // debugger;
     console.log("after timerONE");
 
     // runs logic to get answer from user
@@ -138,13 +139,14 @@ function presentQuestions() {
 }
 
 // Question timerONE
-function timerONE(countdown) {
+function timerONE() {
     clearInterval(intervalId);
-    intervalId = setInterval(countdown, 1000);
+    intervalId = setInterval(questionDecrement, 1000);
 }
 
 //  The decrement function.
 function questionDecrement() {
+    // debugger;
     questionTime--;
     // setTimeout(questionDecrement, 1000);
 
@@ -200,15 +202,15 @@ function getAnswer() {
         $("#alert").slideDown();
     }
 
-    timerTWO(alertDecrement);
+    timerTWO();
     // console.log("after transtion");
 }
 
 
 // Alert timerTWO
-function timerTWO(countdown) {
+function timerTWO() {
     clearInterval(intervalId);
-    intervalId = setInterval(countdown, 1000);
+    intervalId = setInterval(alertDecrement, 1000);
 }
 
 // decrements the timer to transition to a new game
