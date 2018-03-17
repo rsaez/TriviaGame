@@ -64,21 +64,21 @@ for (var i = 0; i < trivia.length; i++) {
     presentQuestions();
 
     // Start question timer
-    timerONE();
-    console.log("Step 2.0 after timer ONE");
+    timerONE(questionDecrement);
+    console.log("after timerONE");
 
     // runs logic to get answer from user
-    getAnswer();
+    // getAnswer();
 
     // Start alert timer
-    timerTWO();
+    // timerTWO(alertDecrement);
 
     // Restart game
     while (reset) {
-        console.log("Step 3.0 restart");
+        console.log("restart function");
         restart();
     }
-    console.log("End of Loop");
+
 }
 
 // Loads a question for the advanced hw
@@ -138,23 +138,13 @@ function presentQuestions() {
 }
 
 // Question timerONE
-function timerONE() {
-    console.log("Step 1.0: timerONE.beginning");
-
+function timerONE(countdown) {
     clearInterval(intervalId);
-    console.log("Cleared interval Id: ");
-    console.log(intervalId);
-    // intervalId = setInterval(questionDecrement, 1000);
-    intervalId = setTimeout(questionDecrement, 1000);
-    console.log("Step 1.9: timerONE.end");
+    intervalId = setInterval(countdown, 1000);
 }
 
 //  The decrement function.
 function questionDecrement() {
-    console.log("Step 1.2: questionDecrement.begining")
-    console.log("Interval Id value: ")
-    console.log(intervalId);
-    console.log("questionTime: " + questionTime);
     questionTime--;
     // setTimeout(questionDecrement, 1000);
 
@@ -165,11 +155,10 @@ function questionDecrement() {
 
     //  Once number hits zero...
     if (questionTime === 0) {
-        console.log("questionTime is 0");
+        // console.log("questionTime is 0");
 
         //  ...run the stop function.
         stop();
-        console.log("Step 1.86 getAnswer.end");
     }
 }
 
@@ -178,16 +167,12 @@ function stop() {
     //  Clears our intervalId
     //  We just pass the name of the interval
     //  to the clearInterval function.
-    console.log("Step 1.3 questionTimer Stop");
     clearInterval(intervalId);
-    questionTime = 5;
-    // getAnswer();
-    console.log("Step 1.85 getAnswer.end");
+    getAnswer();
 }
 
 // gets ansswer from radio and sees if it's right
 function getAnswer() {
-    console.log("Step 1.4 getAnswer.beginning");
     userAnswer = $("input[name='trivia-answers']:checked").val();
 
     if (userAnswer == null) {
@@ -215,54 +200,47 @@ function getAnswer() {
         $("#alert").slideDown();
     }
 
-    // timerTWO();
-    console.log("Step 1.8 getAnswer.end");
+    timerTWO(alertDecrement);
+    // console.log("after transtion");
 }
 
 
-
 // Alert timerTWO
-function timerTWO() {
-    console.log("Step 1.5 timerTwo.begining");
+function timerTWO(countdown) {
     clearInterval(intervalId);
-    intervalId = setInterval(alertDecrement, 1000);
-    console.log("Step 1.7 timerTwo.end");
+    intervalId = setInterval(countdown, 1000);
 }
 
 // decrements the timer to transition to a new game
 function alertDecrement() {
-    console.log("Step 1.6 alertDecrement.begining");
+    //   console.log("Transition Timer is Over");
 
     alertTime--;
     //   setTimeout(alertDecrement, 1000);
 
     // console.log("alertTime: " + alertTime);
-    $("#countdown-clock").html("<h2>Alert Timer: " + questionTime + "</h2>");
 
     // Once number hits zero...
     if (alertTime === 0) {
-        console.log("Step 1.65 timerTwo hits 0");
+        console.log("Transition Timer is Over");
 
         //enables restart
         reset = true;
 
         //  ...run the stop function.
-        alertTime = 5;
         clearInterval(intervalId);
     }
 }
 
 function restart() {
     //reinitialized all variables
+    questionTime = 5;
+    questionArr = [];
+    userAnswer = 0;
     cpuQuestion = "";
     cpuAnswer = "";
-    questionArr = [];
-    // questionTime = 5;
-    // alertTime = 3;
-    userCorrect = 0;
-    userIncorrect = 0;
+    alertTime = 5;
     reset = false;
-
     $("#alert").hide();
-    console.log("Step 3.1 inside restart");
+    console.log("restart");
 }
