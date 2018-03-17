@@ -1,4 +1,4 @@
-// The object questions for the Trivia Game.
+// The object questions for Trivia Game.
 var trivia = [
     {
         //trivia[i].question
@@ -38,19 +38,22 @@ var trivia = [
     }
 ];
 
-//  Variable that will hold our interval ID when we loead the page
+//  game variables
 var cpuQuestion = "";
 var cpuAnswer = "";
 var questionArr = [];
 var intervalId;
-var sec = 5;
-var alertTimer = 3;
+var questionTime = 5;
+var alertTime = 3;
 var userCorrect = 0;
 var userIncorrect = 0;
+var reset = false;
 
 // functions calls
 for (var i = 0; i < trivia.length; i++) {
+
     console.log("Question #" + i);
+
     // loads question to the program
     loadQuestion(i);
 
@@ -60,22 +63,27 @@ for (var i = 0; i < trivia.length; i++) {
     // Print all data to user
     presentQuestions();
 
-    // Start Timer answer countdown
-    timerOne();
-    console.log("after question timer");
+    // Start question timer
+    timerONE(questionDecrement);
+    console.log("after timerONE");
 
     // runs logic to get answer from user
-    getAnswer();
+    // getAnswer();
 
-    //Start timer for alert
-    timer(transitionDec);
+    // Start alert timer
+    // timerTWO(alertDecrement);
 
-    //reset all variables
-    restart();
+    // Restart game
+    while (reset) {
+        console.log("restart function");
+        restart();
+    }
+
 }
 
 // Loads a question for the advanced hw
 function loadQuestion(currentQuestion) {
+
     cpuQuestion = trivia[currentQuestion].question;
     cpuAnswer = trivia[currentQuestion].answer;
 
@@ -91,9 +99,9 @@ function loadQuestion(currentQuestion) {
 function randomMachine() {
     // console.log(questionArr);
     var answerOrder = [];
+    var ranNums = shuffle([0, 1, 2, 3]);
     var temp = [];
 
-    var ranNums = shuffle([0, 1, 2, 3]);
     answerOrder[0] = ranNums.next().value;
     answerOrder[1] = ranNums.next().value;
     answerOrder[2] = ranNums.next().value;
@@ -108,7 +116,7 @@ function randomMachine() {
     // console.log(questionArr);
 }
 
-// Shuffle values in ranNums, not used for advance assingment
+// Shuffle values in ranNums
 function* shuffle(array) {
     var i = array.length;
 
@@ -129,131 +137,110 @@ function presentQuestions() {
     $("#dummy3").html(questionArr[3]);
 }
 
-//  The stop function
-function stop() {
-    //  Clears our intervalId
-    //  We just pass the name of the interval
-    //  to the clearInterval function.
+// Question timerONE
+function timerONE(countdown) {
     clearInterval(intervalId);
+    intervalId = setInterval(countdown, 1000);
 }
 
-// gets ansswer from radio and sees if it's right
-function getAnswer() {
-    var userAnswer = $("input[name='trivia-answers']:checked").val();
+//  The decrement function.
+function questionDecrement() {
+    questionTime--;
+    // setTimeout(questionDecrement, 1000);
 
-    // Check CPU to user answer
-    // computer selected answer is in questionArr[0]
-    // console.log("CPU selected answer : " + cpuAnswer);
-    // console.log("index chosen by user: " + userAnswer + " question at user chosen index: " + questionArr[userAnswer]);
+    //  Show the number in the #show-number tag.
+    $("#countdown-clock").html("<h2>" + questionTime + "</h2>");
 
-    if (userAnswer == null) {
-        console.log("User did not choose an answer");
-        $("#answer-fail").html(cpuAnswer);
-        $("#alert-noanswer").slideDown();
-    } else if (questionArr[userAnswer] === cpuAnswer) {
-        console.log("correct");
-        $("#alert-correct").slideDown();
-    } else {
-        console.log("wrong");
-        $("#answer-fail").html(cpuAnswer);
-        $("#alert-incorrect").slideDown();
-    }
-}
+    // console.log("questionTime: " + questionTime);
 
-// decrements the timer to transition to a new question
-// function questionTimer() {
-//     console.log("inside question timer");
-//     sec--;
-//     setTimeout(function() {}, 1000);
-//
-//     // show countdown on the console
-//     // console.log("alertTimer: " + alertTimer);
-//
-//     // Once number hits zero...
-//     if (sec === 0) {
-//         console.log("Transition Timer is Over");
-//
-//         //  ...run the stop function.
-//         stop();
-//     }
-// }
-
-// decrements the timer to transition to a new question
-function transitionDec() {
-    console.log("inside alert timer");
-    alertTimer--;
-    setTimeout(function() {}, 1000);
-
-    // show countdown on the console
-    // console.log("alertTimer: " + alertTimer);
-
-    // Once number hits zero...
-    if (alertTimer === 0) {
-        console.log("Transition Timer is Over");
+    //  Once number hits zero...
+    if (questionTime === 0) {
+        // console.log("questionTime is 0");
 
         //  ...run the stop function.
         stop();
     }
 }
 
-function restart() {
-    //reinitialized all variables
-    var cpuQuestion = "";
-    var cpuAnswer = "";
-    var questionArr = [];
-    var intervalId;
-    var sec = 5;
-    var alertTimer = 3;
-
-    $("#alert-noanswer").hide();
-    $("#alert-correct").hide();
-    $("#alert-wrong").hide();
-    console.log("restart");
+//  The stop function
+function stop() {
+    //  Clears our intervalId
+    //  We just pass the name of the interval
+    //  to the clearInterval function.
+    clearInterval(intervalId);
+    getAnswer();
 }
 
-// Timers Functions
-function timer(countdown) {
-    console.log("inside timer");
+// gets ansswer from radio and sees if it's right
+function getAnswer() {
+    userAnswer = $("input[name='trivia-answers']:checked").val();
+
+    if (userAnswer == null) {
+        console.log("User did not choose an answer");
+        console.log("cpuAnswer: " + cpuAnswer);
+        $("#alert").html(
+            '<div class="alert alert-danger alert-dismissible" role="alert"><strong>You failed to select an answer!</strong> The answer is ' +
+                cpuAnswer +
+                "</div>"
+        );
+        $("#alert").slideDown();
+    } else if (questionArr[userAnswer] === cpuAnswer) {
+        console.log("correct");
+        $("#alert").html(
+            '<div class="alert alert-success alert-dismissible" role="alert"><strong>You are correct!</strong></div>'
+        );
+        $("#alert").slideShow();
+    } else {
+        console.log("wrong");
+        console.log("cpuAnswer: " + cpuAnswer);
+        $("#alert").html(
+            '<div class="alert alert-danger alert-dismissible" role="alert"><strong>You are Wrong. </strong> The answer is ' +
+                cpuAnswer +
+                '</div>');
+        $("#alert").slideDown();
+    }
+
+    timerTWO(alertDecrement);
+    // console.log("after transtion");
+}
+
+
+// Alert timerTWO
+function timerTWO(countdown) {
     clearInterval(intervalId);
     intervalId = setInterval(countdown, 1000);
 }
 
-function timerOne() {
-    questionIntervalId = setInterval(questionTimer, 1000);
-}
+// decrements the timer to transition to a new game
+function alertDecrement() {
+    //   console.log("Transition Timer is Over");
 
-function questionTimer() {
-    sec--;
-    $("#countdown-clock").html(sec);
+    alertTime--;
+    //   setTimeout(alertDecrement, 1000);
 
-    if(sec == 0){
-        sec = 30;
-        clearInterval(questionIntervalId);
+    // console.log("alertTime: " + alertTime);
+
+    // Once number hits zero...
+    if (alertTime === 0) {
+        console.log("Transition Timer is Over");
+
+        //enables restart
+        reset = true;
+
+        //  ...run the stop function.
+        clearInterval(intervalId);
     }
 }
 
-////////////////////////////////////////
-
-// Randomly chooses a question from the question array
-// used for easy hw, not used for advanced
-function questionRandomizer() {
-    var i = getRndInteger(0, trivia.length);
-    // console.log("trivia.length: " + trivia.length);
-    // console.log("i: " + i);
-
-    cpuQuestion = trivia[i].question;
-    cpuAnswer = trivia[i].answer;
-
-    //transfer trivia object to questionArr
-    questionArr[0] = trivia[i].answer;
-    questionArr[1] = trivia[i].dummy1;
-    questionArr[2] = trivia[i].dummy2;
-    questionArr[3] = trivia[i].dummy3;
-
-    //next function to run presentQuestions()
-}
-
-// Get random number, this does nothing I just liked the function, I eventually did use it to choose the question randomly.
-function getRndInteger(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
+function restart() {
+    //reinitialized all variables
+    questionTime = 5;
+    questionArr = [];
+    userAnswer = 0;
+    cpuQuestion = "";
+    cpuAnswer = "";
+    alertTime = 5;
+    reset = false;
+    $("#alert").hide();
+    console.log("restart");
 }
