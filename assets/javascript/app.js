@@ -43,7 +43,7 @@ var cpuQuestion = "";
 var cpuAnswer = "";
 var questionArr = [];
 var intervalId;
-var questionTime = 5;
+var questionTime = 15;
 var alertTime = 3;
 var userCorrect = 0;
 var userIncorrect = 0;
@@ -224,7 +224,7 @@ function alertDecrement() {
 
 function nextQuestion() {
     //reinitialized all variables
-    questionTime = 5;
+    questionTime = 15;
     questionArr = [];
     userAnswer = 0;
     cpuQuestion = "";
