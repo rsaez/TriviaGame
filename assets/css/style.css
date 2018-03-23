@@ -16,6 +16,10 @@ body {
   margin-bottom: 1rem;
 }
 
+.last-card {
+    margin-bottom: 3em;
+}
+
 /* .alert {
   display: none;
 } */

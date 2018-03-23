@@ -48,39 +48,19 @@ var alertTime = 3;
 var userCorrect = 0;
 var userIncorrect = 0;
 var reset = false;
+var questionIndex = 0
 
-// functions calls
-for (var i = 0; i < trivia.length; i++) {
+// loads question to the program
+loadQuestion(questionIndex);
 
-    console.log("Question #" + i);
+// sets random values to answerOrder array
+randomMachine();
 
-    // loads question to the program
-    loadQuestion(i);
+// Print all data to user
+presentQuestions();
 
-    // sets random values to answerOrder array
-    randomMachine();
-
-    // Print all data to user
-    presentQuestions();
-
-    // Start question timer
-    timerONE();
-    // debugger;
-    console.log("after timerONE");
-
-    // runs logic to get answer from user
-    // getAnswer();
-
-    // Start alert timer
-    // timerTWO(alertDecrement);
-
-    // Restart game
-    while (reset) {
-        console.log("restart function");
-        restart();
-    }
-
-}
+// Start question timer
+timerONE();
 
 // Loads a question for the advanced hw
 function loadQuestion(currentQuestion) {
@@ -148,7 +128,7 @@ function timerONE() {
 function questionDecrement() {
     // debugger;
     questionTime--;
-    // setTimeout(questionDecrement, 1000);
+
 
     //  Show the number in the #show-number tag.
     $("#countdown-clock").html("<h2>" + questionTime + "</h2>");
@@ -177,6 +157,7 @@ function stop() {
 function getAnswer() {
     userAnswer = $("input[name='trivia-answers']:checked").val();
 
+
     if (userAnswer == null) {
         console.log("User did not choose an answer");
         console.log("cpuAnswer: " + cpuAnswer);
@@ -186,12 +167,14 @@ function getAnswer() {
                 "</div>"
         );
         $("#alert").slideDown();
+        userIncorrect++;
     } else if (questionArr[userAnswer] === cpuAnswer) {
         console.log("correct");
         $("#alert").html(
             '<div class="alert alert-success alert-dismissible" role="alert"><strong>You are correct!</strong></div>'
         );
-        $("#alert").slideShow();
+        $("#alert").slideDown();
+        userCorrect++;
     } else {
         console.log("wrong");
         console.log("cpuAnswer: " + cpuAnswer);
@@ -200,6 +183,7 @@ function getAnswer() {
                 cpuAnswer +
                 '</div>');
         $("#alert").slideDown();
+        userIncorrect++;
     }
 
     timerTWO();
@@ -226,23 +210,62 @@ function alertDecrement() {
     if (alertTime === 0) {
         console.log("Transition Timer is Over");
 
-        //enables restart
-        reset = true;
-
         //  ...run the stop function.
         clearInterval(intervalId);
+
+        if (questionIndex == 4) {
+            // Load score board;
+            scoreBoard();
+        }
+
+        nextQuestion();
     }
 }
 
-function restart() {
+function nextQuestion() {
     //reinitialized all variables
     questionTime = 5;
     questionArr = [];
     userAnswer = 0;
     cpuQuestion = "";
     cpuAnswer = "";
-    alertTime = 5;
+    alertTime = 3;
     reset = false;
+    questionIndex++;
+
+    if (questionIndex <= 4) {
+        // clear the radio selection
+        $("#inlineRadio1").prop('checked', false);
+        $("#inlineRadio2").prop('checked', false);
+        $("#inlineRadio3").prop('checked', false);
+        $("#inlineRadio4").prop('checked', false);
+
+        $("#alert").hide();
+        console.log("restart");
+
+        // loads question to the program
+        loadQuestion(questionIndex);
+
+        // sets random values to answerOrder array
+        randomMachine();
+
+        // Print all data to user
+        presentQuestions();
+
+        // Start question timer
+        timerONE();
+    }
+
+
+
+}
+
+function scoreBoard() {
+
     $("#alert").hide();
-    console.log("restart");
+    $("#alert").html(
+        '<div class="alert alert-info alert-dismissible" role="alert"><strong>Game Over, your score is as follows: </strong><br><strong>Correct Answers: ' + userCorrect +
+            '</strong><br><strong>Incorrect Answers: ' + userIncorrect + '</strong></div>');
+
+    $("#alert").show();
 }
